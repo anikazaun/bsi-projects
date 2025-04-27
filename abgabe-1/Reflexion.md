@@ -1,0 +1,5 @@
+Reflexion zur Nutzung von GitHub Copilot
+
+Wir haben GitHub Copilot genutzt, um unsere React-Anwendung zu erstellen. Copilot war hilfreich, um Grundstrukturen wie useState, useEffect und die API-Abfrage mit Axios aufzubauen. Besonders bei der Erstellung der ersten Version des Codes haben die Vorschläge von Copilot uns eine gute Richtung gegeben.
+Manche Vorschläge mussten wir aber anpassen oder neu formulieren, zum Beispiel, weil sie nicht genau zur API gepasst haben oder zu kompliziert waren. In manchen Fällen hat Copilot auch unbrauchbare oder falsche Codevorschläge gemacht, die wir dann weggelassen haben.
+Insgesamt hat uns Copilot geholfen, schneller eine funktionierende Basis zu erstellen. Trotzdem mussten wir die Vorschläge immer wieder genau prüfen und oft anpassen, damit sie wirklich zu unserer Aufgabenstellung gepasst haben. 
