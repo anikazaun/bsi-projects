@@ -1,90 +1,78 @@
 package com.bsi.einkaufsliste
 
-// Klassen die wir für unsere App brauchen
+// Diese Klassen brauchen wir für unsere App:
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 
-// Imports für unsere Benutzeroberfläche
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.bsi.einkaufsliste.ui.theme.EinkaufslisteTheme
+// Diese Imports sind für das UI (Benutzeroberfläche) mit Jetpack Compose:
+import androidx.compose.foundation.clickable // Für "Artikel antippen"
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.bsi.einkaufsliste.ui.theme.EinkaufslisteTheme
 
-
+// MainActivity ist der Einstiegspunkt der App
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Diese Funktion sorgt für ein Layout, das bis an den Bildschirmrand geht
         enableEdgeToEdge()
+
+        // Hier sagen wir: Dieses UI soll angezeigt werden
         setContent {
-            EinkaufslisteTheme {
+            EinkaufslisteTheme { // Unser App-Design (Farben, Schriften, etc.)
+
+                // Scaffold stellt eine Grundstruktur für das Layout zur Verfügung
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
 
+                    // `text` ist das, was im Textfeld steht (Benutzereingabe)
                     var text by remember { mutableStateOf("") }
+
+                    // `items` ist die Liste der hinzugefügten Artikel
                     val items = remember { mutableStateListOf<String>() }
 
+                    // Column ordnet die UI-Elemente untereinander an
                     Column(modifier = Modifier.padding(innerPadding)) {
+
+                        // TextField für die Benutzereingabe
                         TextField(
-                            value = text,
-                            onValueChange = { newText -> text = newText },
-                            label = { Text("Artikel eingeben") }
+                            value = text, // Aktueller Text im Feld
+                            onValueChange = { newText -> text = newText }, // Wird aufgerufen, wenn der Benutzer etwas eintippt
+                            label = { Text("Artikel eingeben") } // Kleiner Hinweistext im Feld
                         )
 
+                        // Button zum Hinzufügen eines Artikels zur Liste
                         Button(
                             onClick = {
+                                // Nur hinzufügen, wenn das Textfeld nicht leer ist
                                 if (text.isNotBlank()) {
-                                    items.add(text)
-                                    text = "" // Eingabefeld leeren
+                                    items.add(text) // Artikel zur Liste hinzufügen
+                                    text = ""       // Textfeld danach leeren
                                 }
                             }
                         ) {
-                            Text("Hinzufügen")
+                            Text("Hinzufügen") // Text im Button
                         }
 
-                        // Liste anzeigen
+                        // Hier zeigen wir alle Artikel in der Liste an
                         for (item in items) {
                             Text(
-                                text = item,
+                                text = item, // Artikelname
                                 modifier = Modifier
-                                    .padding(8.dp)
+                                    .padding(8.dp) // Etwas Abstand nach außen
                                     .clickable {
-                                        items.remove(item)
+                                        items.remove(item) // Artikel aus Liste entfernen, wenn man drauf klickt
                                     }
                             )
                         }
-
                     }
                 }
-
-            }
             }
         }
-    }
-
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    EinkaufslisteTheme {
-        Greeting("Android")
     }
 }
