@@ -19,11 +19,11 @@ import com.bsi.quiz_app.ui.theme.QuizAppTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+        enableEdgeToEdge() // Inhalt bis unter Status-/Navigation-Bar anzeigen
         setContent {
-            QuizAppTheme {
+            QuizAppTheme { // Hier wird das Theme der App angewendet
                 Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colorScheme.background) {
-                    QuizApp()
+                    QuizApp() // Hauptinhalt der App (Composable-Funktion)
                 }
             }
         }
@@ -31,13 +31,14 @@ class MainActivity : ComponentActivity() {
 }
 
 data class Question(
-    val questionText: String,
-    val answers: List<String>,
-    val correctAnswer: String
+    val questionText: String, // Die Frage selbst
+    val answers: List<String>, // Mögliche Antworten
+    val correctAnswer: String // Richtige Antwort
 )
 
 @Composable
 fun QuizApp() {
+    // Fragenliste
     val questions = listOf(
         Question(
             "Was ist die Hauptstadt von Deutschland?",
@@ -56,11 +57,13 @@ fun QuizApp() {
         )
     )
 
+    // Zustände: Startbildschirm, aktuelle Frage, Punktestand, Endbildschirm
     var quizStarted by remember { mutableStateOf(false) }
     var currentQuestionIndex by remember { mutableStateOf(0) }
     var score by remember { mutableStateOf(0) }
     var showEndScreen by remember { mutableStateOf(false) }
 
+    // Startbildschirm
     if (!quizStarted) {
         // Startbildschirm
         StartScreen(onStartQuiz = {
@@ -69,11 +72,13 @@ fun QuizApp() {
             score = 0
             showEndScreen = false
         })
+    // Endbildschirm
     } else if (showEndScreen) {
         EndScreen(score = score, totalQuestions = questions.size) {
             // Quiz neu starten
             quizStarted = false
         }
+    // Fragenbildschirm
     } else {
         QuizScreen(
             question = questions[currentQuestionIndex],
@@ -91,7 +96,7 @@ fun QuizApp() {
         )
     }
 }
-
+// Startbildschirm
 @Composable
 fun StartScreen(onStartQuiz: () -> Unit) {
     Column(
@@ -113,6 +118,7 @@ fun StartScreen(onStartQuiz: () -> Unit) {
     }
 }
 
+// Quiz Screen
 @Composable
 fun QuizScreen(
     question: Question,
@@ -120,6 +126,7 @@ fun QuizScreen(
     onNextQuestion: () -> Unit,
     score: Int
 ) {
+    // Zustände für die Auswahl und Bewertung
     var selectedAnswer by remember { mutableStateOf<String?>(null) }
     var answerChecked by remember { mutableStateOf(false) }
     var isAnswerCorrect by remember { mutableStateOf<Boolean?>(null) }
@@ -140,11 +147,11 @@ fun QuizScreen(
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.padding(bottom = 24.dp)
             )
-
+            // Antwortr Buttons
             question.answers.forEach { answer ->
                 val isSelected = answer == selectedAnswer
                 val isCorrectAnswer = answer.trim().equals(question.correctAnswer.trim(), ignoreCase = true)
-
+            // Hintergrundfarbe je nach Zustand
                 val backgroundColor = when {
                     !answerChecked -> MaterialTheme.colorScheme.primary
                     isSelected && isCorrectAnswer -> Color(0xFF4CAF50)
@@ -174,7 +181,7 @@ fun QuizScreen(
             }
 
             Spacer(modifier = Modifier.height(24.dp))
-
+            // Feedback + Nächste Frage Button
             if (answerChecked) {
                 val feedbackText = if (isAnswerCorrect == true) {
                     "Richtig!"
@@ -217,7 +224,7 @@ fun QuizScreen(
     }
 }
 
-
+// Endbildschirm
 @Composable
 fun EndScreen(score: Int, totalQuestions: Int, onRestart: () -> Unit) {
     Column(
