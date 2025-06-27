@@ -41,36 +41,46 @@ fun WorkoutScreen(viewModel: WorkoutViewModel) {
             .fillMaxSize()
             .padding(16.dp)
     ) {
-        // Titel
-        Text(
-            text = viewModel.currentExercise.name,
-            style = MaterialTheme.typography.headlineLarge
-        )
+        if (viewModel.isInPause) {
+            // Pause wird angezeigt
+            Text(
+                text = "Pause",
+                style = MaterialTheme.typography.headlineLarge
+            )
+            Spacer(modifier = Modifier.height(12.dp))
+            Text(
+                text = "Nächste Übung in: ${viewModel.countdownTime} Sekunden",
+                style = MaterialTheme.typography.bodyLarge
+            )
+        } else {
+            // Normale Übung wird angezeigt
+            Text(
+                text = viewModel.currentExercise.name,
+                style = MaterialTheme.typography.headlineLarge
+            )
 
-        Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(12.dp))
 
-        // Bild
-        Image(
-            painter = painterResource(id = viewModel.currentExercise.imageResId),
-            contentDescription = viewModel.currentExercise.name,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(200.dp)
-        )
+            Image(
+                painter = painterResource(id = viewModel.currentExercise.imageResId),
+                contentDescription = viewModel.currentExercise.name,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(200.dp)
+            )
 
-        Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(12.dp))
 
-        // Beschreibung
-        Text(
-            text = viewModel.currentExercise.description,
-            style = MaterialTheme.typography.bodyLarge
-        )
+            Text(
+                text = viewModel.currentExercise.description,
+                style = MaterialTheme.typography.bodyLarge
+            )
 
-        Spacer(modifier = Modifier.height(24.dp))
+            Spacer(modifier = Modifier.height(24.dp))
 
-        // Button
-        Button(onClick = { viewModel.nextExercise() }) {
-            Text("Nächste Übung")
+            Button(onClick = { viewModel.startPause(10) }) {
+                Text("Pause starten")
+            }
         }
     }
 }

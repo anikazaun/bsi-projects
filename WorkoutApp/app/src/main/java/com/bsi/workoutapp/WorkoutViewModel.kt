@@ -1,7 +1,9 @@
 package com.bsi.workoutapp
 
+import android.os.CountDownTimer
 import androidx.compose.runtime.*
 import androidx.lifecycle.ViewModel
+import com.bsi.workoutapp.R
 
 class WorkoutViewModel : ViewModel() {
 
@@ -17,15 +19,44 @@ class WorkoutViewModel : ViewModel() {
     )
 
     private var currentIndex by mutableStateOf(0)
-
     val currentExercise: Exercise
         get() = exerciseList[currentIndex]
+
+    var isInPause by mutableStateOf(false)
+        private set
+
+    var countdownTime by mutableStateOf(0)
+        private set
+
+    private var timer: CountDownTimer? = null
 
     fun nextExercise() {
         if (currentIndex < exerciseList.size - 1) {
             currentIndex++
         } else {
-            currentIndex = 0 // zurück zum Start, wenn fertig
+            currentIndex = 0
         }
+    }
+
+    fun startPause(durationInSeconds: Int = 10) {
+        isInPause = true
+        countdownTime = durationInSeconds
+
+        timer?.cancel()
+        timer = object : CountDownTimer(durationInSeconds * 1000L, 1000L) {
+            override fun onTick(millisUntilFinished: Long) {
+                countdownTime = (millisUntilFinished / 1000).toInt()
+            }
+
+            override fun onFinish() {
+                isInPause = false
+                nextExercise()
+            }
+        }.start()
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        timer?.cancel()
     }
 }
