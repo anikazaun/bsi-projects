@@ -75,4 +75,11 @@ dependencies {
 // Für Vorschau in Android Studio
     debugImplementation("androidx.compose.ui:ui-tooling:1.5.3")
 
+    dependencies {
+        // ... andere Dependencies
+
+        implementation("androidx.navigation:navigation-compose:2.7.7")
+    }
+
+
 }

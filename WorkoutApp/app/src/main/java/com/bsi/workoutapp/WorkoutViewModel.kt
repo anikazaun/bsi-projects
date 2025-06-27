@@ -28,6 +28,10 @@ class WorkoutViewModel : ViewModel() {
     var countdownTime by mutableStateOf(0)
         private set
 
+    var playSoundTrigger by mutableStateOf(false)
+
+
+
     private var timer: CountDownTimer? = null
 
     fun nextExercise() {
@@ -41,6 +45,7 @@ class WorkoutViewModel : ViewModel() {
     fun startPause(durationInSeconds: Int = 10) {
         isInPause = true
         countdownTime = durationInSeconds
+        playSoundTrigger = true // ← Ton beim Start
 
         timer?.cancel()
         timer = object : CountDownTimer(durationInSeconds * 1000L, 1000L) {
@@ -51,9 +56,11 @@ class WorkoutViewModel : ViewModel() {
             override fun onFinish() {
                 isInPause = false
                 nextExercise()
+                playSoundTrigger = true // ← Ton beim Ende
             }
         }.start()
     }
+
 
     override fun onCleared() {
         super.onCleared()
