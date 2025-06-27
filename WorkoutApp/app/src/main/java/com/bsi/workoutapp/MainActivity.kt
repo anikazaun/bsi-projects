@@ -11,6 +11,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bsi.workoutapp.ui.theme.WorkoutAppTheme
+import androidx.compose.ui.res.painterResource
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.*
+
+
 
 class MainActivity : ComponentActivity() {
 
@@ -31,18 +36,45 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun WorkoutScreen(viewModel: WorkoutViewModel) {
-    Column(modifier = Modifier
-        .fillMaxSize()
-        .padding(16.dp)) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
+        // Titel
+        Text(
+            text = viewModel.currentExercise.name,
+            style = MaterialTheme.typography.headlineLarge
+        )
 
-        Text(text = "Aktuelle Übung: ${viewModel.currentExercise}", style = MaterialTheme.typography.headlineMedium)
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(12.dp))
+
+        // Bild
+        Image(
+            painter = painterResource(id = viewModel.currentExercise.imageResId),
+            contentDescription = viewModel.currentExercise.name,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(200.dp)
+        )
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        // Beschreibung
+        Text(
+            text = viewModel.currentExercise.description,
+            style = MaterialTheme.typography.bodyLarge
+        )
+
         Spacer(modifier = Modifier.height(24.dp))
+
+        // Button
         Button(onClick = { viewModel.nextExercise() }) {
             Text("Nächste Übung")
         }
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable
