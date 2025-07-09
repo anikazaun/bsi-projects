@@ -4,21 +4,25 @@ import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.bsi.happyplacesapp.ui.screens.AddPlaceScreen
+import com.bsi.happyplacesapp.ui.screens.DetailScreen
+import com.bsi.happyplacesapp.ui.screens.HomeScreen
+import com.bsi.happyplacesapp.ui.screens.MapScreen
 
 @Composable
 fun AppNavigation(navController: NavHostController) {
     NavHost(navController = navController, startDestination = "home") {
         composable("home") {
-            // TODO: HomeScreen()
+            HomeScreen()
         }
         composable("add_place") {
-            // TODO: AddPlaceScreen()
+            AddPlaceScreen()
         }
         composable("map") {
-            // TODO: MapScreen()
+            MapScreen()
         }
         composable("detail") {
-            // TODO: DetailScreen()
+            DetailScreen()
         }
     }
 }
