@@ -13,6 +13,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.example.happyplaces.data.Place
+import com.example.happyplaces.data.PlaceRepository
+
 
 @Composable
 fun AddPlaceScreen(startLatitude: Double, startLongitude: Double) {
@@ -73,15 +76,23 @@ fun AddPlaceScreen(startLatitude: Double, startLongitude: Double) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // Karte entfernt
 
         Button(onClick = {
-            Toast.makeText(
-                context,
-                "Ort gespeichert: $title\nLat: $latitude, Lon: $longitude",
-                Toast.LENGTH_SHORT
-            ).show()
-            // TODO: Ort in DB speichern
+            if (title.isNotBlank() && description.isNotBlank()) {
+                PlaceRepository.addPlace(
+                    Place(
+                        title = title,
+                        description = description,
+                        imageUri = selectedImageUri?.toString(),
+                        latitude = latitude,
+                        longitude = longitude
+                    )
+                )
+
+                Toast.makeText(context, "Ort gespeichert!", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(context, "Bitte Titel und Beschreibung angeben", Toast.LENGTH_SHORT).show()
+            }
         }, modifier = Modifier.fillMaxWidth()) {
             Text("Ort speichern")
         }

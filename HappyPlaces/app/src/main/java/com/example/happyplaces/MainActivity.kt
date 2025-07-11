@@ -8,7 +8,9 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -18,6 +20,11 @@ import androidx.compose.ui.unit.dp
 import com.example.happyplaces.ui.AddPlaceActivity
 import com.example.happyplaces.ui.SelectLocationActivity
 import com.example.happyplaces.ui.theme.HappyPlacesTheme
+import com.example.happyplaces.data.PlaceRepository
+import com.example.happyplaces.ui.PlaceCard
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,10 +59,38 @@ fun MainScreen() {
         }
     }
 
-    Button(onClick = {
-        val intent = Intent(context, SelectLocationActivity::class.java)
-        launcher.launch(intent)
-    }) {
-        Text("Neuen Ort hinzufügen")
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(16.dp)
+    ) {
+
+        Text("Meine Orte", style = MaterialTheme.typography.headlineSmall)
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        LazyColumn(
+            modifier = Modifier
+                .weight(1f) // Liste füllt den verfügbaren Platz aus
+                .fillMaxWidth()
+        ) {
+            items(PlaceRepository.placeList) { place ->
+                PlaceCard(place = place, onClick = {
+                    // TODO: Detailansicht anzeigen
+                })
+            }
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Button(
+            onClick = {
+                val intent = Intent(context, SelectLocationActivity::class.java)
+                launcher.launch(intent)
+            },
+            modifier = Modifier.fillMaxWidth()
+        ) {
+            Text("Neuen Ort hinzufügen")
+        }
     }
 }
