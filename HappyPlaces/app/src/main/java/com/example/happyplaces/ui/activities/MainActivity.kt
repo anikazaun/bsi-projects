@@ -20,6 +20,7 @@ import com.example.happyplaces.data.Place
 import com.example.happyplaces.data.PlaceRepository
 import com.example.happyplaces.ui.composables.PlaceCard
 import com.example.happyplaces.ui.composables.PlaceDetailView
+import com.example.happyplaces.ui.screens.MainScreen
 import com.example.happyplaces.ui.theme.HappyPlacesTheme
 
 class MainActivity : ComponentActivity() {
@@ -34,75 +35,3 @@ class MainActivity : ComponentActivity() {
     }
 }
 
-@Composable
-fun MainScreen() {
-    val context = LocalContext.current
-
-    var selectedPlace by remember { mutableStateOf<Place?>(null) }
-
-    val launcher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.StartActivityForResult()
-    ) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            val data = result.data
-            val lat = data?.getDoubleExtra("latitude", 0.0) ?: 0.0
-            val lon = data?.getDoubleExtra("longitude", 0.0) ?: 0.0
-
-            // Starte AddPlaceActivity mit ausgewählten Koordinaten
-            val intent = Intent(context, AddPlaceActivity::class.java).apply {
-                putExtra("latitude", lat)
-                putExtra("longitude", lon)
-            }
-            context.startActivity(intent)
-        }
-    }
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp)
-    ) {
-
-        Text("Meine Orte", style = MaterialTheme.typography.headlineSmall)
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        LazyColumn(
-            modifier = Modifier
-                .weight(1f)
-                .fillMaxWidth()
-        ) {
-            items(PlaceRepository.placeList) { place ->
-                PlaceCard(
-                    place = place,
-                    onClick = {
-                        selectedPlace = place
-                    },
-                    onDelete = {
-                        PlaceRepository.deletePlace(place)
-                    }
-                )
-            }
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Button(
-            onClick = {
-                val intent = Intent(context, SelectLocationActivity::class.java)
-                launcher.launch(intent)
-            },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("Neuen Ort hinzufügen")
-        }
-    }
-
-    // Detailansicht anzeigen, wenn ein Ort ausgewählt ist
-    selectedPlace?.let { place ->
-        PlaceDetailView(
-            place = place,
-            onClose = { selectedPlace = null }
-        )
-    }
-}

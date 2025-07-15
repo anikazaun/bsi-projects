@@ -26,4 +26,11 @@ object PlaceRepository {
     fun deletePlace(place: Place) {
         placeList.remove(place)
     }
+
+    fun updatePlace(updatedPlace: Place) {
+        val index = placeList.indexOfFirst { it.id == updatedPlace.id }
+        if (index != -1) {
+            placeList[index] = updatedPlace
+        }
+    }
 }
