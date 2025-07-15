@@ -22,6 +22,7 @@ import coil.compose.AsyncImage
 import com.example.happyplaces.data.Place
 import kotlinx.coroutines.delay
 
+
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun PlaceCard(
