@@ -1,16 +1,21 @@
-package com.example.happyplaces.ui
+package com.example.happyplaces.ui.activities
 
-import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.happyplaces.ui.composables.MapComponent
 
 class SelectLocationActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,11 +25,11 @@ class SelectLocationActivity : ComponentActivity() {
             var selectedLon by remember { mutableStateOf(13.4050) }
 
             Column(
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier.Companion.fillMaxSize(),
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
                 MapComponent(
-                    modifier = Modifier.weight(1f),
+                    modifier = Modifier.Companion.weight(1f),
                     onLocationSelected = { lat, lon ->
                         selectedLat = lat
                         selectedLon = lon
@@ -36,10 +41,10 @@ class SelectLocationActivity : ComponentActivity() {
                         val intent = Intent()
                         intent.putExtra("latitude", selectedLat)
                         intent.putExtra("longitude", selectedLon)
-                        setResult(Activity.RESULT_OK, intent)
+                        setResult(RESULT_OK, intent)
                         finish()
                     },
-                    modifier = Modifier
+                    modifier = Modifier.Companion
                         .fillMaxWidth()
                         .padding(16.dp)
                 ) {

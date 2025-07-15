@@ -1,9 +1,11 @@
-package com.example.happyplaces.ui
+package com.example.happyplaces.ui.composables
 
+import android.view.MotionEvent
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.preference.PreferenceManager
 import org.osmdroid.config.Configuration
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
@@ -20,7 +22,7 @@ fun MapComponent(
     LaunchedEffect(Unit) {
         Configuration.getInstance().load(
             context,
-            androidx.preference.PreferenceManager.getDefaultSharedPreferences(context)
+            PreferenceManager.getDefaultSharedPreferences(context)
         )
     }
 
@@ -40,7 +42,7 @@ fun MapComponent(
                 overlays.add(marker)
 
                 setOnTouchListener { _, event ->
-                    if (event.action == android.view.MotionEvent.ACTION_UP) {
+                    if (event.action == MotionEvent.ACTION_UP) {
                         val proj = projection
                         val geoPoint = proj.fromPixels(event.x.toInt(), event.y.toInt()) as GeoPoint
                         marker.position = geoPoint

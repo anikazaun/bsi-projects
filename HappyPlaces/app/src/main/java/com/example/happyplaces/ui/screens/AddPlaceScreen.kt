@@ -1,4 +1,4 @@
-package com.example.happyplaces.ui
+package com.example.happyplaces.ui.screens
 
 import android.net.Uri
 import android.widget.Toast

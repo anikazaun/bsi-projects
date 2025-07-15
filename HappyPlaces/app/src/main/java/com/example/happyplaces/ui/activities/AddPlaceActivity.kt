@@ -1,8 +1,9 @@
-package com.example.happyplaces.ui
+package com.example.happyplaces.ui.activities
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import com.example.happyplaces.ui.screens.AddPlaceScreen
 import com.example.happyplaces.ui.theme.HappyPlacesTheme
 
 class AddPlaceActivity : ComponentActivity() {
