@@ -16,9 +16,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.example.happyplaces.ui.theme.HappyPlacesTheme
 import com.example.happyplaces.data.PlaceRepository
-import com.example.happyplaces.ui.composables.PlaceCard
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import com.example.happyplaces.ui.composables.PlaceCard
 
 
 class MainActivity : ComponentActivity() {
