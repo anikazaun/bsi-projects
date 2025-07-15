@@ -14,11 +14,11 @@ import org.osmdroid.views.overlay.Marker
 @Composable
 fun MapComponent(
     modifier: Modifier = Modifier,
-    onLocationSelected: (latitude: Double, longitude: Double) -> Unit
+    onLocationSelected: (latitude: Double, longitude: Double) -> Unit,
+    onMapReady: (MapView, Marker) -> Unit
 ) {
     val context = LocalContext.current
 
-    // OSMDroid Setup (nur einmal)
     LaunchedEffect(Unit) {
         Configuration.getInstance().load(
             context,
@@ -32,7 +32,7 @@ fun MapComponent(
             MapView(ctx).apply {
                 setMultiTouchControls(true)
                 controller.setZoom(15.0)
-                val startPoint = GeoPoint(52.5200, 13.4050) // Startpunkt Berlin
+                val startPoint = GeoPoint(52.5200, 13.4050)
                 controller.setCenter(startPoint)
 
                 val marker = Marker(this).apply {
@@ -40,6 +40,8 @@ fun MapComponent(
                     setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_BOTTOM)
                 }
                 overlays.add(marker)
+
+                onMapReady(this, marker)
 
                 setOnTouchListener { _, event ->
                     if (event.action == MotionEvent.ACTION_UP) {
@@ -54,9 +56,6 @@ fun MapComponent(
                     }
                 }
             }
-        },
-        update = { map ->
-            // Falls nötig, hier weitere Updates
         }
     )
 }
