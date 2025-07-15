@@ -10,16 +10,17 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import com.example.happyplaces.ui.theme.HappyPlacesTheme
-import com.example.happyplaces.data.PlaceRepository
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import com.example.happyplaces.data.Place
+import com.example.happyplaces.data.PlaceRepository
 import com.example.happyplaces.ui.composables.PlaceCard
-
+import com.example.happyplaces.ui.composables.PlaceDetailView
+import com.example.happyplaces.ui.theme.HappyPlacesTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,6 +37,8 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MainScreen() {
     val context = LocalContext.current
+
+    var selectedPlace by remember { mutableStateOf<Place?>(null) }
 
     val launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult()
@@ -66,17 +69,17 @@ fun MainScreen() {
 
         LazyColumn(
             modifier = Modifier
-                .weight(1f) // Liste füllt den verfügbaren Platz aus
+                .weight(1f)
                 .fillMaxWidth()
         ) {
             items(PlaceRepository.placeList) { place ->
                 PlaceCard(
                     place = place,
                     onClick = {
-                        // TODO: Detailansicht anzeigen
+                        selectedPlace = place
                     },
                     onDelete = {
-                        PlaceRepository.deletePlace(place) // <- Platzhalter: hier löschst du den Ort
+                        PlaceRepository.deletePlace(place)
                     }
                 )
             }
@@ -93,5 +96,13 @@ fun MainScreen() {
         ) {
             Text("Neuen Ort hinzufügen")
         }
+    }
+
+    // Detailansicht anzeigen, wenn ein Ort ausgewählt ist
+    selectedPlace?.let { place ->
+        PlaceDetailView(
+            place = place,
+            onClose = { selectedPlace = null }
+        )
     }
 }
