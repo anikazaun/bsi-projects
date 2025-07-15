@@ -22,4 +22,8 @@ object PlaceRepository {
     fun addPlace(place: Place) {
         placeList.add(place)
     }
+
+    fun deletePlace(place: Place) {
+        placeList.remove(place)
+    }
 }

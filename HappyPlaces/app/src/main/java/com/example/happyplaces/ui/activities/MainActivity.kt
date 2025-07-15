@@ -70,9 +70,15 @@ fun MainScreen() {
                 .fillMaxWidth()
         ) {
             items(PlaceRepository.placeList) { place ->
-                PlaceCard(place = place, onClick = {
-                    // TODO: Detailansicht anzeigen
-                })
+                PlaceCard(
+                    place = place,
+                    onClick = {
+                        // TODO: Detailansicht anzeigen
+                    },
+                    onDelete = {
+                        PlaceRepository.deletePlace(place) // <- Platzhalter: hier löschst du den Ort
+                    }
+                )
             }
         }
 

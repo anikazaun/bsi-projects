@@ -54,6 +54,7 @@ dependencies {
     implementation("org.osmdroid:osmdroid-android:6.1.14")
     implementation("org.osmdroid:osmdroid-wms:6.1.14")
     implementation("androidx.preference:preference-ktx:1.2.0")
+    implementation("androidx.compose.material:material:1.6.0")
 
 
     testImplementation(libs.junit)
